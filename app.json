@@ -2,7 +2,7 @@
   "expo": {
     "name": "EuroAPP",
     "slug": "EuroAPP",
-    "version": "1.0.0",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,16 +15,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pagepro.EuroAPP",
+      "buildNumber": "0.3.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pagepro.EuroAPP",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "22691364-8d95-4708-bad8-efb606152c71"
+      }
     }
   }
 }
