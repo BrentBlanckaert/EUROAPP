@@ -7,25 +7,40 @@ import {collection, getDocs, doc, getDoc, addDoc, setDoc} from "firebase/firesto
 import {getAuth} from "firebase/auth";
 import {FIREBASE_AUTH, FIRESTORE_DB} from "../../FirebaseConfig";
 import React from "react";
+import ScoreComponent from "../components/ScoreComponent";
 
 
 export default function DetailScreen({route, navigation}) {
 	const { id, name, countries, members, memberData } = route.params;
-	const [label, setLabel] = useState("");
-	const [value, setValue] = useState("");
+	const [label, setLabel] = useState(""); // dropdown label
+	const [value, setValue] = useState(""); // dropdown value
 	const [isFocus, setIsFocus] = useState(false);
-	const [memberslist, setMembers] = useState(members);
-	const [memberDatalist, setMemberData] = useState(memberData);
-	const [data, setData] = useState([]);
+	const [memberslist, setMembers] = useState(members); // list of members
+	const [memberScores, setMemberScores] = useState([]); // list of member scores
+	const [memberDataIdList, setMemberDataIds] = useState(memberData); // list of member data ids
+	const [data, setData] = useState([]); // dropdown data
 	const [loading, setLoading] = useState(false);
 	const [participating, setParticipating] = useState(false);
-	const [currentMemDataID, setCurrentMemDataID] = useState("");
+	const [currentMemDataID, setCurrentMemDataID] = useState(""); // memory data id of my account
 
 	const fontSize = name.length > 15 ? 20 : 40
 
+	async function getMemberData(id) {
+		setValue(id)
+		const docRef = doc(FIRESTORE_DB, "memberdata", `${id}`)
+		const querySnapshot = await getDoc(docRef);
+		if (querySnapshot.exists()){
+			const memdata = querySnapshot.data()
+			setMemberScores(memdata.scores)
+			console.log(memdata.scores)
+		}
+	}
+
 	async function participate() {
 		setLoading(true);
+		// Loads the given event from the database
 		const docRef = doc(FIRESTORE_DB, "event", `${id}`)
+		// Adds the current user to the list of members
 		memberslist.push(FIREBASE_AUTH.currentUser.uid)
 		setMembers(memberslist)
 		const memdataRef = await addDoc(collection(FIRESTORE_DB, "memberdata"), {
@@ -40,25 +55,29 @@ export default function DetailScreen({route, navigation}) {
 		}, {
 			merge: true
 		});
-		memberDatalist.push(memdataRef.id)
-		setMemberData(memberDatalist)
+		memberDataIdList.push(memdataRef.id)
+		setMemberDataIds(memberDataIdList)
 
+		// Updates the event with the new member list and member data list
 		await setDoc(docRef, {
 			members: memberslist,
-			memberData: memberDatalist
+			memberData: memberDataIdList
 		}, {
 			merge: true
 		});
+
+		// Loads the user data from the database
 		const user = FIREBASE_AUTH.currentUser
 		const docUserRef = doc(FIRESTORE_DB, "users", `${user.uid}`)
 		const querySnapshot = await getDoc(docUserRef);
 		if (querySnapshot.exists()){
 			const userdata = querySnapshot.data()
+			// Adds the user to the dropdown list
 			data.push({"label": userdata.username, "value": memdataRef.id})
 			setData(data)
 			setCurrentMemDataID(memdataRef.id)
 			setLabel(userdata.username)
-			setValue(memdataRef.id)
+			await getMemberData(memdataRef.id)
 		}
 		setParticipating(true)
 		setLoading(false);
@@ -80,13 +99,13 @@ export default function DetailScreen({route, navigation}) {
 				const querySnapshot = await getDoc(docRef);
 				if (querySnapshot.exists()){
 					const userdata = querySnapshot.data()
-					data.push({"label": userdata.username, "value": memberDatalist[i]})
+					data.push({"label": userdata.username, "value": memberDataIdList[i]})
 					setData(data)
 					if (user !== null && user.uid === memberslist[i]){
 						setParticipating(true)
-						setCurrentMemDataID(memberDatalist[i])
+						setCurrentMemDataID(memberDataIdList[i])
 						setLabel(userdata.username)
-						setValue(memberDatalist[i])
+						await getMemberData(memberDataIdList[i])
 					}
 				}
 			}
@@ -121,9 +140,9 @@ export default function DetailScreen({route, navigation}) {
 					value={value}
 					onFocus={() => setIsFocus(true)}
 					onBlur={() => setIsFocus(false)}
-					onChange={item => {
+					onChange={async item => {
 						setLabel(item.label)
-						setValue(item.value);
+						await getMemberData(item.value);
 						setIsFocus(false);
 					}}
 					renderLeftIcon={() => (
@@ -138,10 +157,10 @@ export default function DetailScreen({route, navigation}) {
 				{ currentMemDataID === value || ! participating ? <></> :
 					<Pressable
 						style={detailStyles.button}
-						onPress={() => {
-							const index = memberDatalist.indexOf(currentMemDataID)
+						onPress={async () => {
+							const index = memberDataIdList.indexOf(currentMemDataID)
 							setLabel(data[index].label)
-							setValue(currentMemDataID)
+							await getMemberData(currentMemDataID)
 						}}
 					>
 						<Text style={styles.text}>
@@ -150,10 +169,17 @@ export default function DetailScreen({route, navigation}) {
 					</Pressable>
 				}
 				<Text style={detailStyles.text}>{label}</Text>
-				<Text>{id}</Text>
-				<Text>{countries}</Text>
-				<Text>{memberslist}</Text>
-				<Text>{memberDatalist}</Text>
+				<ScrollView style={{width: "100%", height: "100%", borderRadius: 50}}>
+					{ memberScores.length > 0 ? countries.map((l, i) => (
+						<ScoreComponent
+							title={l}
+							scoreSong={memberScores[i*3]}
+							scoreAct={memberScores[i*3+1]}
+							scoreCostume={memberScores[i*3+2]}
+							editable={currentMemDataID === value}
+						/>
+					)) : <></>}
+				</ScrollView>
 			</View>
 			{ ! participating ?
 				<View style={{
