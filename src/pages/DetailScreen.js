@@ -34,7 +34,6 @@ export default function DetailScreen({route, navigation}) {
 		const querySnapshot = await getDoc(docRef);
 		if (querySnapshot.exists()) {
 			const memdata = querySnapshot.data()
-			console.log(memdata)
 			await setDoc(docRef, {
 				scores: memberScores
 			}, {
@@ -50,7 +49,6 @@ export default function DetailScreen({route, navigation}) {
 		if (querySnapshot.exists()){
 			const memdata = querySnapshot.data()
 			setMemberScores(memdata.scores)
-			console.log(memdata.scores)
 		}
 	}
 
