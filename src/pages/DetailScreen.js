@@ -25,6 +25,24 @@ export default function DetailScreen({route, navigation}) {
 
 	const fontSize = name.length > 15 ? 20 : 40
 
+	async function setNewScore(startIndex, score) {
+		memberScores[startIndex] = score[0]
+		memberScores[startIndex + 1] = score[1]
+		memberScores[startIndex + 2] = score[2]
+		setMemberScores(memberScores)
+		const docRef = doc(FIRESTORE_DB, "memberdata", `${value}`)
+		const querySnapshot = await getDoc(docRef);
+		if (querySnapshot.exists()) {
+			const memdata = querySnapshot.data()
+			console.log(memdata)
+			await setDoc(docRef, {
+				scores: memberScores
+			}, {
+				merge: true
+			});
+		}
+	}
+
 	async function getMemberData(id) {
 		setValue(id)
 		const docRef = doc(FIRESTORE_DB, "memberdata", `${id}`)
@@ -177,6 +195,7 @@ export default function DetailScreen({route, navigation}) {
 							scoreAct={memberScores[i*3+1]}
 							scoreCostume={memberScores[i*3+2]}
 							editable={currentMemDataID === value}
+							changeScore={(newScores) => setNewScore(i*3, newScores)}
 						/>
 					)) : <></>}
 				</ScrollView>

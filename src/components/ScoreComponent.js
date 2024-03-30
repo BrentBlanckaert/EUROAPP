@@ -1,18 +1,45 @@
 import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import ScoreField from "./ScoreField";
+import {useEffect, useState} from "react";
 
-export default function ScoreComponent({title, scoreSong, scoreAct, scoreCostume, editable}) {
+export default function ScoreComponent({title, scoreSong, scoreAct, scoreCostume, editable, changeScore}) {
+
+	const [songVal, setSong] = useState(scoreSong);
+	const [actVal, setAct] = useState(scoreAct);
+	const [costumeVal, setCostume] = useState(scoreCostume);
+
+	useEffect( () => {
+		setSong(scoreSong)
+		setAct(scoreAct)
+		setCostume(scoreCostume)
+	}, [scoreSong, scoreAct, scoreCostume]);
+
+	function setSongScore(text) {
+		changeScore([parseInt(text), actVal, costumeVal])
+		setSong(parseInt(text))
+	}
+
+	function setActScore(text) {
+		changeScore([songVal, parseInt(text), costumeVal])
+		setAct(parseInt(text))
+	}
+
+	function setCostumeScore(text) {
+		changeScore([songVal, actVal, parseInt(text)])
+		setCostume(parseInt(text))
+	}
+
 	return (
 		<View style={detailStyles.card}>
 			<Text style={detailStyles.title}>Country: {title}</Text>
 			<View style={detailStyles.scoreCard}>
-				<ScoreField string={"Song: "} score={scoreSong} editable={editable}/>
-				<ScoreField string={"Act: "} score={scoreAct} editable={editable}/>
-				<ScoreField string={"Costume: "} score={scoreCostume} editable={editable}/>
+				<ScoreField string={"Song: "} score={songVal} editable={editable} callbackScore={setSongScore}/>
+				<ScoreField string={"Act: "} score={actVal} editable={editable} callbackScore={setActScore}/>
+				<ScoreField string={"Costume: "} score={costumeVal} editable={editable} callbackScore={setCostumeScore}/>
 			</View>
 			<View>
 				<View style={detailStyles.scoreField}>
-					<Text style={detailStyles.score}>{Math.round(((scoreSong + scoreAct + scoreCostume) / 3) * 10) / 10}</Text>
+					<Text style={detailStyles.score}>{Math.round(((songVal + actVal + costumeVal) / 3) * 10) / 10}</Text>
 				</View>
 			</View>
 		</View>
