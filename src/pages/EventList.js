@@ -2,6 +2,7 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {collection, getDocs} from "firebase/firestore";
 import {FIRESTORE_DB} from "../../FirebaseConfig";
+import {styles} from "../general_style";
 
 
 export default function EventList({navigation}) {
@@ -16,7 +17,13 @@ export default function EventList({navigation}) {
 				querySnapshot.forEach((doc) => {
 					const firestoreTimestamp = doc.data().date_of_creation;
 					const milliseconds = firestoreTimestamp.seconds * 1000 + firestoreTimestamp.nanoseconds / 1000000;
-					events.push({id: doc.id, name: doc.data().name, date: new Date(milliseconds)})
+					events.push({
+						id: doc.id,
+						name: doc.data().name,
+						countries: doc.data().countries,
+						members: doc.data().members,
+						memberData: doc.data().memberData,
+						date: new Date(milliseconds)})
 				});
 				events.sort((a, b) => b.date - a.date);
 				setEvents(events);
@@ -27,19 +34,26 @@ export default function EventList({navigation}) {
 	}, [navigation]);
 
 	return (
-		<View style={{height: "100%", flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 8}}>
+		<View style={{
+			backgroundColor: "#838383",
+			height: "100%", flex: 1,
+			flexDirection: "column", justifyContent: "center",
+			alignItems: "center", padding: 8}}>
 			<ScrollView style={{height: "90%", width: "100%"}}>
 				{
 					events.map((l, i) => (
 						<Pressable
 							style={styles.cell}
 							key={i}
-							onPress={() => navigation.navigate("DetailScreen", {
+							onPress={() => navigation.navigate("Scores", {
 								id: l.id,
-								name: l.name
-							})}
+								name: l.name,
+								countries: l.countries,
+								members: l.members,
+								memberData: l.memberData})
+							}
 						>
-							<Text style={{fontWeight: "bold", color: "white", fontSize: 20}}>{l.name}</Text>
+							<Text style={{fontWeight: "bold", color: "white", fontSize: 30}}>{l.name}</Text>
 						</Pressable>
 					))
 				}
@@ -57,33 +71,3 @@ export default function EventList({navigation}) {
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	cell: {
-		backgroundColor: "#182767",
-		borderWidth: 4,
-		borderRadius: 8,
-		height: 50,
-		justifyContent: "center",
-		alignItems: "center",
-		marginVertical: 6,
-	},
-	button: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 32,
-		borderRadius: 8,
-		elevation: 3,
-		backgroundColor: '#f4511e',
-		marginTop: 10,
-		width: "100%"
-	},
-	text: {
-		fontSize: 16,
-		lineHeight: 21,
-		fontWeight: 'bold',
-		letterSpacing: 0.25,
-		color: 'white',
-	},
-});

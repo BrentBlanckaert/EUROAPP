@@ -3,8 +3,9 @@ import React, {useState} from "react";
 import {FIREBASE_AUTH} from "../../FirebaseConfig";
 import {useTailwind} from "tailwind-rn";
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth"
+import {styles} from "../general_style";
 
-export default function Login() {
+export default function Login({navigation}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -20,23 +21,6 @@ export default function Login() {
         } catch (error) {
             console.log(error);
             alert('Sign in failed ' + error.message)
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const signUp = async () => {
-        setLoading(true);
-        console.log(email);
-        console.log(password);
-        alert("email: " + email);
-        try {
-            const response = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(response);
-            alert('Your email is ' + email)
-        } catch (error) {
-            console.log(error);
-            alert('Registration failed ' + error.message)
         } finally {
             setLoading(false);
         }
@@ -73,7 +57,9 @@ export default function Login() {
                         </Pressable>
                         <Pressable
                           style={styles.button}
-                          onPress={signUp}
+                          onPress={() => {
+                              console.log("ping")
+                              navigation.navigate("Create an account")}}
                         >
                             <Text style={styles.text}>
                                 Create account
@@ -86,31 +72,3 @@ export default function Login() {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    cell: {
-        borderWidth: 4,
-        borderRadius: 8,
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 8,
-        elevation: 3,
-        backgroundColor: '#f4511e',
-        marginTop: 10,
-        width: "100%"
-    },
-    text: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
-    },
-});

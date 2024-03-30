@@ -14,6 +14,7 @@ import {FIREBASE_AUTH, FIRESTORE_DB} from "../../FirebaseConfig";
 import {useTailwind} from "tailwind-rn";
 import { ListItem } from 'react-native-elements'
 import {collection, getDocs, addDoc, setDoc } from "firebase/firestore";
+import {styles} from "../general_style";
 
 export default function CreateEvent({navigation}) {
 
@@ -53,17 +54,7 @@ export default function CreateEvent({navigation}) {
 				user_id: FIREBASE_AUTH.currentUser.uid
 			});
 
-			const scores = []
-			for (const country of selectedCountries) {
-				const scoreRef = await addDoc(collection(FIRESTORE_DB, "scoredata"), {
-					memberdata_id: memdataRef.id,
-					country: country,
-					act: 0,
-					outfit: 0,
-					song: 0
-				});
-				scores.push(scoreRef.id)
-			}
+			const scores = new Array(selectedCountries.length*3).fill(0)
 			await setDoc(memdataRef, {
 				scores: scores
 			}, {
@@ -105,6 +96,7 @@ export default function CreateEvent({navigation}) {
 
 	return (
 		<SafeAreaView style={{
+			backgroundColor: "#838383",
 			height: '100%',
 			padding: 20,
 			flex: 1,
@@ -147,30 +139,3 @@ export default function CreateEvent({navigation}) {
 		</SafeAreaView>
 	)
 }
-
-const styles = StyleSheet.create({
-	cell: {
-		borderWidth: 4,
-		borderRadius: 8,
-		height: 50,
-		justifyContent: "center",
-		alignItems: "center"
-	},
-	button: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 32,
-		borderRadius: 8,
-		elevation: 3,
-		backgroundColor: '#f4511e',
-		marginTop: 10
-	},
-	text: {
-		fontSize: 16,
-		lineHeight: 21,
-		fontWeight: 'bold',
-		letterSpacing: 0.25,
-		color: 'white',
-	},
-});
