@@ -86,7 +86,7 @@ function OutsideLayer() {
           headerShown : true,
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: '#00089d',
+            backgroundColor: '#6b70c9',
           },
           headerTitleStyle: {
             fontWeight: 'bold',

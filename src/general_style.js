@@ -15,9 +15,9 @@ export const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingVertical: 12,
 		paddingHorizontal: 32,
-		borderRadius: 8,
+		borderRadius: 20,
 		elevation: 3,
-		backgroundColor: '#00089d',
+		backgroundColor: '#ffffff',
 		marginTop: 10,
 		width: "100%"
 	},
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
 		lineHeight: 21,
 		fontWeight: 'bold',
 		letterSpacing: 0.25,
-		color: 'white',
+		color: 'black',
 	},
 	title: {
 		fontSize: 40,

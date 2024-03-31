@@ -4,6 +4,8 @@ import {FIREBASE_AUTH, FIRESTORE_DB} from "../../FirebaseConfig";
 import {useTailwind} from "tailwind-rn";
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth"
 import {doc, addDoc, collection, setDoc} from "firebase/firestore";
+import {styles} from "../general_style";
+
 
 export default function CreateAccount() {
 	const [email, setEmail] = useState("");
@@ -29,7 +31,6 @@ export default function CreateAccount() {
 				});
 
 			}
-			alert('Your email is ' + email)
 		} catch (error) {
 			console.log(error);
 			alert('Registration failed ' + error.message)
@@ -39,36 +40,44 @@ export default function CreateAccount() {
 	}
 
 	return (
-		<View style={tailwind('bg-gray-400 flex flex-1  p-5')}>
-			<View style={tailwind('flex flex-col w-full h-full ')}>
-				<Text style={tailwind("ml-2 mb-2 text-xl font-bold")}>Username</Text>
+		<View style={{padding: 5, display: "flex", flex: 1, backgroundColor: "#371c73"}}>
+			<View style={tailwind('flex flex-col w-full h-full')}>
+				<Text style={{color: "white", marginTop: 30, marginLeft: 10, marginBottom: 10, fontSize: 20, fontWeight: "bold"}}>
+					Username
+				</Text>
 				<TextInput
 					value={username}
 					autoCapitalize={"none"}
-					style={tailwind('bg-white w-full rounded-lg p-3 mb-4')}
+					style={{backgroundColor: "white", width: "full", borderRadius: 20, padding: 15, marginBottom: 10}}
 					placeholder={"Username"} onChangeText={(text) => setUsername(text)}
 				/>
-				<Text style={tailwind("ml-2 mb-2 text-xl font-bold")}>Email</Text>
+				<Text style={{color: "white", marginLeft: 10, marginBottom: 10, fontSize: 20, fontWeight: "bold"}}>
+					Email
+				</Text>
 				<TextInput
 					value={email}
 					autoCapitalize={"none"}
-					style={tailwind('bg-white w-full rounded-lg p-3 mb-4')}
+					style={{backgroundColor: "white", width: "full", borderRadius: 20, padding: 15, marginBottom: 10}}
 					placeholder={"Email"} onChangeText={(text) => setEmail(text)}
 				/>
-				<Text style={tailwind("ml-2 mb-2 text-xl font-bold")}>Password</Text>
+				<Text style={{color: "white", marginLeft: 10, marginBottom: 10, fontSize: 20, fontWeight: "bold"}}>
+					Password
+				</Text>
 				<TextInput
 					value={password}
 					autoCapitalize={"none"}
 					secureTextEntry={true}
-					style={tailwind('bg-white w-full rounded-lg p-3 mb-4')}
+					style={{backgroundColor: "white", width: "full", borderRadius: 20, padding: 15, marginBottom: 10}}
 					placeholder={"Password"} onChangeText={(text) => setPassword(text)}
 				/>
-				<Text style={tailwind("ml-2 mb-2 text-xl font-bold")}>Confirm password</Text>
+				<Text style={{color: "white", marginLeft: 10, marginBottom: 10, fontSize: 20, fontWeight: "bold"}}>
+					Confirm password
+				</Text>
 				<TextInput
 					value={conf_password}
 					autoCapitalize={"none"}
 					secureTextEntry={true}
-					style={tailwind('bg-white w-full rounded-lg p-3 mb-4')}
+					style={{backgroundColor: "white", width: "full", borderRadius: 20, padding: 15, marginBottom: 50}}
 					placeholder={"Password"} onChangeText={(text) => setConfPassword(text)}
 				/>
 				{ loading ? (<ActivityIndicator size={"large"} color={"#0000ff"} />)
@@ -89,31 +98,3 @@ export default function CreateAccount() {
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	cell: {
-		borderWidth: 4,
-		borderRadius: 8,
-		height: 50,
-		justifyContent: "center",
-		alignItems: "center"
-	},
-	button: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 32,
-		borderRadius: 8,
-		elevation: 3,
-		backgroundColor: '#f4511e',
-		marginTop: 10,
-		width: "100%"
-	},
-	text: {
-		fontSize: 16,
-		lineHeight: 21,
-		fontWeight: 'bold',
-		letterSpacing: 0.25,
-		color: 'white',
-	},
-});

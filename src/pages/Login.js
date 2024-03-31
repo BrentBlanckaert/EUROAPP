@@ -15,9 +15,7 @@ export default function Login({navigation}) {
     const signIn = async () => {
         setLoading(true);
         try {
-            const response = await signInWithEmailAndPassword(auth, email, password);
-            console.log(response);
-            alert('Your email is ' + email)
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
             console.log(error);
             alert('Sign in failed ' + error.message)
@@ -27,48 +25,66 @@ export default function Login({navigation}) {
     }
 
     return (
-        <View style={tailwind('bg-gray-400 flex flex-1  p-5')}>
-            <View style={tailwind('flex flex-col w-full h-full justify-center')}>
-                <Text style={tailwind("ml-2 mb-2 text-xl font-bold")}>Email</Text>
-                <TextInput
-                    value={email}
-                    autoCapitalize={"none"}
-                    style={tailwind('bg-white w-full rounded-lg p-3 mb-4')}
-                    placeholder={"Email"} onChangeText={(text) => setEmail(text)}
-                />
-                <Text style={tailwind("ml-2 mb-2 text-xl font-bold")}>Password</Text>
-                <TextInput
-                    value={password}
-                    autoCapitalize={"none"}
-                    secureTextEntry={true}
-                    style={tailwind('bg-white w-full rounded-lg p-3 mb-4')}
-                    placeholder={"Password"} onChangeText={(text) => setPassword(text)}
-                />
-                { loading ? (<ActivityIndicator size={"large"} color={"#0000ff"} />)
-                    : (
-                    <View>
-                        <Pressable
-                          style={styles.button}
-                          onPress={signIn}
-                        >
-                            <Text style={styles.text}>
-                                Login
-                            </Text>
-                        </Pressable>
-                        <Pressable
-                          style={styles.button}
-                          onPress={() => {
-                              console.log("ping")
-                              navigation.navigate("Create an account")}}
-                        >
-                            <Text style={styles.text}>
-                                Create account
-                            </Text>
-                        </Pressable>
-                    </View>
-                    )
-                }
+        <View style={{padding: 5, display: "flex", flex: 1, backgroundColor: "#371c73"}}>
+            <View style={{display: "flex", flexDirection: "column", width: "full", height: "full"}}>
+                <View style={{justifyContent: "center", marginVertical: 100, alignContent: "center"}}>
+                    <Text
+                      style={{
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          fontSize: 45,
+                          color: "#ffffff",
+                    }}
+                    >
+                        EuroScores
+                    </Text>
+                </View>
+                <View style={{justifyContent: "center"}}>
+                    <Text style={{color: "white", marginLeft: 10, marginBottom: 10, fontSize: 20, fontWeight: "bold"}}>
+                        Email
+                    </Text>
+                    <TextInput
+                      value={email}
+                      autoCapitalize={"none"}
+                      style={{backgroundColor: "white", width: "full", borderRadius: 20, padding: 15, marginBottom: 10}}
+                      placeholder={"Email"} onChangeText={(text) => setEmail(text)}
+                    />
+                    <Text style={{color: "white", marginLeft: 10, marginBottom: 10, fontSize: 20, fontWeight: "bold"}}>
+                        Password
+                    </Text>
+                    <TextInput
+                      value={password}
+                      autoCapitalize={"none"}
+                      secureTextEntry={true}
+                      style={{backgroundColor: "white", width: "full", borderRadius: 20, padding: 15, marginBottom: 50}}
+                      placeholder={"Password"} onChangeText={(text) => setPassword(text)}
+                    />
+                    { loading ? (<ActivityIndicator size={"large"} color={"#0000ff"} />)
+                      : (
+                        <View>
+                            <Pressable
+                              style={styles.button}
+                              onPress={signIn}
+                            >
+                                <Text style={styles.text}>
+                                    Login
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                              style={styles.button}
+                              onPress={() => {
+                                  navigation.navigate("Create an account")}}
+                            >
+                                <Text style={styles.text}>
+                                    Create account
+                                </Text>
+                            </Pressable>
+                        </View>
+                      )
+                    }
+                </View>
             </View>
         </View>
     )
 }
+
