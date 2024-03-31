@@ -96,7 +96,7 @@ export default function CreateEvent({navigation}) {
 
 	return (
 		<SafeAreaView style={{
-			backgroundColor: "#838383",
+			backgroundColor: "#371c73",
 			height: '100%',
 			padding: 20,
 			flex: 1,
@@ -106,7 +106,7 @@ export default function CreateEvent({navigation}) {
 			<TextInput
 				value={name}
 				autoCapitalize={"none"}
-				style={{backgroundColor: "white", borderWidth: 4, borderRadius: 8, borderColor: "gray", padding: 8}}
+				style={{backgroundColor: "white", borderWidth: 4, borderRadius: 20, borderColor: "gray", padding: 15, fontSize: 16}}
 				placeholder={"Insert the name of the event"} onChangeText={(text) => setName(text)}
 			/>
 			<Text style={{marginLeft: 8, marginBottom:8, marginTop:8, fontWeight: "bold", fontSize: 16,}}>Available countries</Text>
@@ -114,7 +114,7 @@ export default function CreateEvent({navigation}) {
 				{
 					allCountries.map((l, i) => (
 						<Pressable style={styles.cell} key={i} onPress={() => selectCountry(i)}>
-							<Text style={{fontWeight: "bold", color: "black", fontSize: 20}}>{l}</Text>
+							<Text style={{fontWeight: "bold", color: "white", fontSize: 20}}>{l}</Text>
 						</Pressable>
 					))
 				}
@@ -124,7 +124,7 @@ export default function CreateEvent({navigation}) {
 				{
 					selectedCountries.map((l, i) => (
 						<Pressable style={styles.cell} key={i} onPress={() => removeCountry(i)}>
-							<Text style={{fontWeight: "bold", color: "black", fontSize: 20}}>{i+1}: {l}</Text>
+							<Text style={{fontWeight: "bold", color: "white", fontSize: 20}}>{i+1}: {l}</Text>
 						</Pressable>
 					))
 				}

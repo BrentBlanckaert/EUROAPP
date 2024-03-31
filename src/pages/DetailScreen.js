@@ -131,7 +131,7 @@ export default function DetailScreen({route, navigation}) {
 
 	return (
 		<View style={{
-			backgroundColor: "#838383",
+			backgroundColor: "#371c73",
 			height: "100%"}}>
 			<View style={{
 				height: "90%", width: "100%",
@@ -185,7 +185,7 @@ export default function DetailScreen({route, navigation}) {
 					</Pressable>
 				}
 				<Text style={detailStyles.text}>{label}</Text>
-				<ScrollView style={{width: "100%", height: "100%", borderRadius: 50}}>
+				<ScrollView style={{width: "100%", height: "100%", borderRadius: 50, marginTop: 10}}>
 					{ memberScores.length > 0 ? countries.map((l, i) => (
 						<ScoreComponent
 							title={l}
@@ -225,10 +225,11 @@ const detailStyles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingVertical: 12,
 		paddingHorizontal: 32,
-		borderRadius: 8,
+		borderRadius: 20,
 		elevation: 3,
-		backgroundColor: '#00089d',
+		backgroundColor: 'white',
 		marginTop: 5,
+		marginBottom: 5,
 		width: "60%"
 	},
 	text: {
@@ -236,7 +237,7 @@ const detailStyles = StyleSheet.create({
 		lineHeight: 35,
 		fontWeight: 'bold',
 		letterSpacing: 0.25,
-		color: 'black',
+		color: 'white',
 	},
 	dropdown: {
 		width: '100%',
@@ -245,7 +246,9 @@ const detailStyles = StyleSheet.create({
 		borderBottomColor: 'gray',
 		borderBottomWidth: 0.5,
 		borderWidth: 2,
-		borderRadius: 8
+		borderRadius: 20,
+		padding: 10,
+		backgroundColor: "white"
 	},
 	icon: {
 		marginRight: 5,

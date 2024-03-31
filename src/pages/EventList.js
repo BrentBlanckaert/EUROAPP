@@ -35,7 +35,7 @@ export default function EventList({navigation}) {
 
 	return (
 		<View style={{
-			backgroundColor: "#838383",
+			backgroundColor: "#371c73",
 			height: "100%", flex: 1,
 			flexDirection: "column", justifyContent: "center",
 			alignItems: "center", padding: 8}}>
